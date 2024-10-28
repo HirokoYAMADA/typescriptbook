@@ -1,12 +1,13 @@
-import {GetServerSideProps, NextPage } from "next";
+import { GetServerSideProps, NextPage } from "next";
 import { useEffect, useState } from "react";
+import styles from "./index.module.css";
 
 
 type Props = {
     initialImageUrl: string;
 }
 
-const IndexPage: NextPage<Props> = ({initialImageUrl}) =>{
+const IndexPage: NextPage<Props> = ({ initialImageUrl }) => {
     const [imageUrl, setImageUrl] = useState(initialImageUrl);
     const [loading, setLoading] = useState(false);
 
@@ -24,10 +25,12 @@ const IndexPage: NextPage<Props> = ({initialImageUrl}) =>{
         setLoading(false);
     }
     return (
-    <div>
-        <button onClick={handleClick}> 他のねこも見る</button>
-        {loading || <img src={imageUrl} />}
-    </div>
+        <div className={styles.page}>
+            <button onClick={handleClick} className={styles.button}> 他のねこも見る</button>
+            <div className={styles.frame}>
+                {loading || <img src={imageUrl} className={styles.img} />}
+            </div>
+        </div>
     );
 };
 
@@ -36,11 +39,11 @@ export default IndexPage;
 export const getServerSideProps: GetServerSideProps<Props> = async () => {
     const image = await fetchImage();
     return {
-      props: {
-        initialImageUrl: image.url,
-      },
+        props: {
+            initialImageUrl: image.url,
+        },
     };
-  };
+};
 
 
 type Image = {
